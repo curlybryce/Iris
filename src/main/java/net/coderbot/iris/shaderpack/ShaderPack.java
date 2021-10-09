@@ -62,7 +62,6 @@ public class ShaderPack {
 				return null;
 			}
 		}).orElse(null);
-		if (this.config != null) this.config.save();
 
 	}
 

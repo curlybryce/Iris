@@ -126,8 +126,9 @@ public class ShaderPackConfig {
 	public <T> Option<T> processOption(Option<T> option) {
 		if (configProperties.containsKey(option.getName())) {
 			option.load(configProperties);
+		} else {
+			option.save(configProperties);
 		}
-		option.save(configProperties);
 		return option;
 	}
 
