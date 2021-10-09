@@ -2,6 +2,10 @@
 
 # Iris
 
+## Why did you fork Iris?
+
+I forked Iris to hack in support for reading shaderpack options.  I've done practically nothing and grabbed all the code from [HyperCubeMC](https://github.com/HyperCubeMC/Iris) and [OverlordsIII](https://github.com/OverlordsIII/Iris).  All I did was get all the code in as cleanly as I know how without a messy commit history.
+
 ## Links
 
 * **Visit [our website](https://irisshaders.net) for downloads and pretty screenshots!**

@@ -26,16 +26,22 @@ public class ShaderPack {
 	private final IdMap idMap;
 	private final Map<String, Map<String, String>> langMap;
 	private final CustomTexture customNoiseTexture;
+	private final ShaderPackConfig config;
+	private final ShaderProperties shaderProperties;
 
 	public ShaderPack(Path root) throws IOException {
 		// A null path is not allowed.
 		Objects.requireNonNull(root);
 
-		ShaderProperties shaderProperties = loadProperties(root, "shaders.properties")
-			.map(ShaderProperties::new)
-			.orElseGet(ShaderProperties::empty);
+		this.shaderProperties = loadProperties(root, "shaders.properties")
+				.map(ShaderProperties::new)
+				.orElseGet(ShaderProperties::empty);
+		if (Iris.getIrisConfig() != null) {
+			this.config = new ShaderPackConfig(Iris.getIrisConfig().getShaderPackName().orElse(""));
+			this.config.load();
+		} else this.config = null;
 
-		this.base = new ProgramSet(root, root, shaderProperties, this);
+		this.base = new ProgramSet(root, root, this);
 		this.overworld = loadOverrides(root, "world0", shaderProperties, this);
 		this.nether = loadOverrides(root, "world-1", shaderProperties, this);
 		this.end = loadOverrides(root, "world1", shaderProperties, this);
@@ -56,6 +62,8 @@ public class ShaderPack {
 				return null;
 			}
 		}).orElse(null);
+		if (this.config != null) this.config.save();
+
 	}
 
 	@Nullable
@@ -63,7 +71,7 @@ public class ShaderPack {
 		Path sub = root.resolve(subfolder);
 
 		if (Files.exists(sub)) {
-			return new ProgramSet(sub, root, shaderProperties, pack);
+			return new ProgramSet(sub, root, pack);
 		}
 
 		return null;
@@ -104,6 +112,14 @@ public class ShaderPack {
 		}
 
 		return ProgramSet.merged(base, overrides);
+	}
+
+	public ShaderProperties getShaderProperties() {
+		return shaderProperties;
+	}
+
+	public ShaderPackConfig getConfig() {
+		return config;
 	}
 
 	public IdMap getIdMap() {

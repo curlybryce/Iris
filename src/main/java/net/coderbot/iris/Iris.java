@@ -467,7 +467,9 @@ public class Iris implements ClientModInitializer {
 
 		return color + version;
 	}
-
+	public static Path getShaderpacksDirectory() {
+		return SHADERPACKS_DIRECTORY;
+	}
 	public static boolean isSodiumInvalid() {
 		return sodiumInvalid;
   }
